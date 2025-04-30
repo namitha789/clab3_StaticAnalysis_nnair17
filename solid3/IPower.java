@@ -8,14 +8,18 @@ public interface IPower {
 }
 
 class PowerSimple implements IPower {
+	@Override // Fix: @override
 	public int toPower(int n, int pow) {
-		if (pow == 0)
-			return 1;
+		if (pow == 0){
+
+			return 1; // Fix:  Added braces
+		}
 		int res = 1;
-		for (int i = 0; i < pow; res *= n, i++)
-			;
-		;
-		;
+		// Fix : Added braces around the for loop body 
+    // Fix : Removed unnecessary semicolons after the for loop
+        for (int i = 0; i < pow; i++) {
+					res *= n;  // Fix: Moved the multiplication inside the loop block
+			}
 		return res;
 	}
 }
@@ -24,12 +28,14 @@ class PowerCached implements IPower {
 	private static Map<Integer, Map<Integer, Integer>> __cache = new HashMap<Integer, Map<Integer, Integer>>();
 
 	// resolves the inefficiency in AlmostBest
+	@Override // Fix : @override
 	public int toPower(int n, int pow) {
-		Map<Integer, Integer> entry = PowerCached.__cache.get(n);
+		Map<Integer, Integer> entry = __cache.get(n);// Fix : scope fix 
 
 		if (entry == null) {
 			entry = new HashMap<Integer, Integer>();
-		}
+			__cache.put(n, entry); // Added missing cache insertion
+	}
 		return toCachedPower(entry, n, pow);
 	}
 
